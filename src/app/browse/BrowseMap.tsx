@@ -108,7 +108,9 @@ export default function BrowseMap({ pins }: { pins: MapPin[] }) {
 
     return () => {
       cancelled = true
-      roots.forEach((r) => r.unmount())
+      queueMicrotask(() => {
+        roots.forEach((r) => r.unmount())
+      })
     }
   }, [pins, router])
 
