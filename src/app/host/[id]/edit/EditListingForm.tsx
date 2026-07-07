@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { setOptions as setMapOptions, importLibrary } from '@googlemaps/js-api-loader'
+import { Check } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { AMENITY_ICONS } from '@/lib/amenityIcons'
 import {
   updateListingBasics,
   updateListingLocation,
@@ -64,7 +66,11 @@ function SectionStatus({ error, saved }: { error: string | null; saved: boolean 
       {error && (
         <p className="mt-3 rounded-xl bg-destructive/10 px-4 py-2.5 text-[13px] text-destructive">{error}</p>
       )}
-      {saved && !error && <p className="mt-3 text-[13px] font-medium text-primary">Saved ✓</p>}
+      {saved && !error && (
+        <p className="mt-3 flex items-center gap-1 text-[13px] font-medium text-primary">
+          <Check size={14} /> Saved
+        </p>
+      )}
     </>
   )
 }
@@ -352,7 +358,7 @@ export default function EditListingForm({
               />
             </div>
             <div>
-              <label className={labelCls}>Total beds</label>
+              <label className={labelCls}>Bathrooms</label>
               <input
                 type="number" min={1} max={20} className={inputCls}
                 value={basics.beds}
@@ -437,27 +443,31 @@ export default function EditListingForm({
 
         <h3 className="mb-3 mt-6 text-[15px] font-semibold text-foreground">Amenities</h3>
         <div className="grid grid-cols-2 gap-2">
-          {AMENITIES.map((a) => (
-            <label
-              key={a.value}
-              className="flex cursor-pointer items-center gap-2 rounded-lg border border-border p-3 text-[14px] text-foreground transition hover:bg-muted"
-            >
-              <input
-                type="checkbox"
-                checked={hostingOptions.amenities.includes(a.value)}
-                onChange={(e) =>
-                  setHostingOptions({
-                    ...hostingOptions,
-                    amenities: e.target.checked
-                      ? [...hostingOptions.amenities, a.value]
-                      : hostingOptions.amenities.filter((v) => v !== a.value),
-                  })
-                }
-                className="h-4 w-4 flex-shrink-0"
-              />
-              {a.label}
-            </label>
-          ))}
+          {AMENITIES.map((a) => {
+            const Icon = AMENITY_ICONS[a.value]
+            return (
+              <label
+                key={a.value}
+                className="flex cursor-pointer items-center gap-2 rounded-lg border border-border p-3 text-[14px] text-foreground transition hover:bg-muted"
+              >
+                <input
+                  type="checkbox"
+                  checked={hostingOptions.amenities.includes(a.value)}
+                  onChange={(e) =>
+                    setHostingOptions({
+                      ...hostingOptions,
+                      amenities: e.target.checked
+                        ? [...hostingOptions.amenities, a.value]
+                        : hostingOptions.amenities.filter((v) => v !== a.value),
+                    })
+                  }
+                  className="h-4 w-4 flex-shrink-0"
+                />
+                {Icon && <Icon size={16} className="shrink-0 text-muted-foreground" />}
+                {a.label}
+              </label>
+            )
+          })}
         </div>
         <SectionStatus error={hostingError} saved={hostingSaved} />
         <button type="button" onClick={handleSaveHosting} disabled={hostingPending} className={`mt-4 ${saveBtnCls}`}>

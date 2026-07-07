@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { Star, ArrowLeftRight, Sparkles, MessageCircle, Users, BedDouble, Bath } from 'lucide-react'
 import { messageHost } from './actions'
 
 interface Props {
@@ -64,7 +65,7 @@ export default function BookingSidebar({
         </div>
         {avgRating != null && (
           <span className="flex items-center gap-1 rounded-full bg-secondary px-2.5 py-1 text-xs font-semibold text-primary">
-            ★ {avgRating.toFixed(1)}
+            <Star size={12} className="fill-current" /> {avgRating.toFixed(1)}
           </span>
         )}
       </div>
@@ -111,7 +112,7 @@ export default function BookingSidebar({
               onClick={() => handleBook('swap')}
               className="flex w-full items-center justify-center gap-2 rounded-full bg-primary py-3.5 text-sm font-semibold text-primary-foreground hover:opacity-90"
             >
-              <SwapSvg /> Request a reciprocal swap
+              <ArrowLeftRight size={16} /> Request a reciprocal swap
             </button>
           )}
           {openToLoops && loopsPerNight != null && (
@@ -119,7 +120,7 @@ export default function BookingSidebar({
               onClick={() => handleBook('loops')}
               className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-foreground py-3.5 text-sm font-semibold text-foreground hover:bg-foreground/5"
             >
-              <LoopsSvg />
+              <Sparkles size={16} />
               {nights > 0 ? `Book with ${totalLoops.toLocaleString()} Loops` : 'Book with Loops'}
             </button>
           )}
@@ -128,7 +129,7 @@ export default function BookingSidebar({
             disabled={msgPending || !hostId}
             className="flex w-full items-center justify-center gap-2 rounded-full bg-secondary py-3.5 text-sm font-semibold text-accent hover:opacity-90 disabled:opacity-50"
           >
-            <MsgSvg /> Message host
+            <MessageCircle size={16} /> Message host
           </button>
           {msgError && <p className="text-xs text-destructive">{msgError}</p>}
         </div>
@@ -137,60 +138,15 @@ export default function BookingSidebar({
       {/* Property summary */}
       <div className="mt-5 space-y-2.5 border-t border-border pt-5">
         <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
-          <GuestsSvg /> Up to {maxGuests} guests
+          <Users size={16} /> Up to {maxGuests} guests
         </div>
         <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
-          <BedSvg /> {bedrooms} bedroom{bedrooms !== 1 ? 's' : ''}
+          <BedDouble size={16} /> {bedrooms} bedroom{bedrooms !== 1 ? 's' : ''}
         </div>
         <div className="flex items-center gap-2.5 text-sm text-muted-foreground">
-          <BedSvg /> {beds} bed{beds !== 1 ? 's' : ''}
+          <Bath size={16} /> {beds} bathroom{beds !== 1 ? 's' : ''}
         </div>
       </div>
     </div>
-  )
-}
-
-function SwapSvg() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-      <path d="M17 1l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" />
-      <path d="M7 23l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
-    </svg>
-  )
-}
-
-function LoopsSvg() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-      <circle cx="8" cy="12" r="5" /><circle cx="16" cy="12" r="5" />
-    </svg>
-  )
-}
-
-function MsgSvg() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
-  )
-}
-
-function GuestsSvg() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-      <circle cx="9" cy="7" r="4" />
-      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-    </svg>
-  )
-}
-
-function BedSvg() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <path d="M2 4v16" /><path d="M2 8h18a2 2 0 0 1 2 2v10" />
-      <path d="M2 17h20" /><path d="M6 8v9" />
-    </svg>
   )
 }

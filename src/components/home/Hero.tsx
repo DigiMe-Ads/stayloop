@@ -33,23 +33,23 @@ export default function Hero() {
         {/* Right: hardcoded photo collage */}
         <div className="hidden grid-cols-2 gap-4 md:grid">
           <div className="relative h-[420px] overflow-hidden rounded-3xl">
-            <Image src="/hero/villa-bedroom.jpg" alt="Colonial villa bedroom" fill className="object-cover" />
+            <Image src="/images/house-4.webp" alt="Colonial villa bedroom" fill className="object-cover" />
           </div>
           <div className="flex flex-col gap-4">
             <div className="relative h-[200px] overflow-hidden rounded-3xl">
-              <Image src="/hero/ocean-pool.jpg" alt="Infinity pool over the ocean" fill className="object-cover" />
+              <Image src="/images/house-2.jpg" alt="Infinity pool over the ocean" fill className="object-cover" />
             </div>
             <div className="relative h-[200px] overflow-hidden rounded-3xl">
-              <Image src="/hero/kyoto-street.jpg" alt="Kyoto street at dusk" fill className="object-cover" />
+              <Image src="/images/house-3.jpg" alt="Kyoto street at dusk" fill className="object-cover" />
             </div>
           </div>
         </div>
       </div>
 
       {/* Fourth photo, bottom-left under the tall one, matching the screenshot's offset stack */}
-      <div className="mt-4 hidden md:grid md:grid-cols-2">
-        <div className="relative h-[160px] w-full max-w-[280px] overflow-hidden rounded-3xl justify-self-end">
-          <Image src="/hero/night-pool.jpg" alt="Reflective pool at night" fill className="object-cover" />
+      <div className="mt-1 hidden md:grid md:grid-cols-1">
+        <div className="relative h-[260px] w-full max-w-[480px] overflow-hidden rounded-3xl justify-self-end">
+          <Image src="/images/house-1.webp" alt="Reflective pool at night" fill className="object-cover" />
         </div>
       </div>
     </section>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
+import { Check, Sparkles, ArrowLeftRight, TrendingUp } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { countryName } from '@/lib/countryNames'
 import NavBar from '@/components/NavBar'
@@ -125,8 +126,8 @@ export default async function DashboardPage({
       <NavBar />
       <div className="mx-auto max-w-7xl px-6 py-10">
         {sp.swap === 'requested' && (
-          <div className="mb-6 rounded-2xl bg-secondary px-5 py-4 text-sm font-medium text-accent">
-            ✓ Request sent — you&apos;ll hear back once the host responds.
+          <div className="mb-6 flex items-center gap-2 rounded-2xl bg-secondary px-5 py-4 text-sm font-medium text-accent">
+            <Check size={16} /> Request sent — you&apos;ll hear back once the host responds.
           </div>
         )}
         {/* Header */}
@@ -134,7 +135,7 @@ export default async function DashboardPage({
           <div>
             <p className="text-[14px] text-muted-foreground">Welcome back</p>
             <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
-              Hi, {displayName} 👋
+              Hi, {displayName}
             </h1>
           </div>
           <Link
@@ -149,9 +150,7 @@ export default async function DashboardPage({
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="rounded-2xl bg-primary p-6 text-primary-foreground">
             <p className="flex items-center gap-2 text-[14px] font-medium opacity-90">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                <circle cx="8" cy="12" r="5" /><circle cx="16" cy="12" r="5" />
-              </svg>
+              <Sparkles size={15} />
               Loops balance
             </p>
             <p className="mt-3 text-4xl font-extrabold">{balance.toLocaleString()}</p>
@@ -159,10 +158,7 @@ export default async function DashboardPage({
 
           <div className="rounded-2xl border border-border p-6">
             <p className="flex items-center gap-2 text-[14px] font-medium text-muted-foreground">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                <path d="M17 1l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" />
-                <path d="M7 23l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
-              </svg>
+              <ArrowLeftRight size={15} />
               Upcoming swaps
             </p>
             <p className="mt-3 text-4xl font-extrabold text-foreground">{upcoming.length}</p>
@@ -175,9 +171,7 @@ export default async function DashboardPage({
 
           <div className="rounded-2xl border border-border p-6">
             <p className="flex items-center gap-2 text-[14px] font-medium text-muted-foreground">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round">
-                <path d="M23 6l-9.5 9.5-5-5L1 18" /><path d="M17 6h6v6" />
-              </svg>
+              <TrendingUp size={15} />
               Hosted nights
             </p>
             <p className="mt-3 text-4xl font-extrabold text-foreground">{hostedNightsThisYear}</p>
@@ -296,9 +290,7 @@ export default async function DashboardPage({
             <div className="rounded-2xl bg-foreground p-6 text-background">
               <div className="flex items-center justify-between">
                 <p className="text-[14px] font-medium opacity-80">Your Loops</p>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="text-primary">
-                  <circle cx="8" cy="12" r="5" /><circle cx="16" cy="12" r="5" />
-                </svg>
+                <Sparkles size={18} className="text-primary" />
               </div>
               <p className="mt-3 text-4xl font-extrabold">{balance.toLocaleString()}</p>
               <p className="mt-1 text-[14px] opacity-80">{monthDelta >= 0 ? '+' : ''}{monthDelta.toLocaleString()} this month</p>

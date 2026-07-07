@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { Star } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { countryName } from '@/lib/countryNames'
 
@@ -160,9 +161,7 @@ export default async function FeaturedHomes() {
                 </span>
                 {listing.avg_rating != null && (
                   <span className="flex items-center gap-1 font-medium text-foreground">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
+                    <Star size={13} className="fill-current" />
                     {listing.avg_rating.toFixed(1)}
                   </span>
                 )}
@@ -173,7 +172,7 @@ export default async function FeaturedHomes() {
               </h3>
 
               <div className="mt-1 flex items-center justify-between text-[14px] text-muted-foreground">
-                <span>{propertyTypeLabel(listing.property_type)} · {listing.beds} beds</span>
+                <span>{propertyTypeLabel(listing.property_type)} · {listing.beds} bathrooms</span>
                 <span className="truncate">Host: {listing.owner?.display_name ?? 'Unknown'}</span>
               </div>
             </Link>

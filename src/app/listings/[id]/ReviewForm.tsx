@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
+import { Check, Star } from 'lucide-react'
 import { submitReview } from './actions'
 
 interface Props {
@@ -16,8 +17,8 @@ export default function ReviewForm({ listingId }: Props) {
 
   if (done) {
     return (
-      <div className="rounded-2xl bg-secondary px-5 py-4 text-sm font-medium text-accent">
-        ✓ Review submitted — thank you!
+      <div className="flex items-center gap-2 rounded-2xl bg-secondary px-5 py-4 text-sm font-medium text-accent">
+        <Check size={16} /> Review submitted — thank you!
       </div>
     )
   }
@@ -45,17 +46,10 @@ export default function ReviewForm({ listingId }: Props) {
             onClick={() => setRating(s)}
             aria-label={`Rate ${s} star${s !== 1 ? 's' : ''}`}
           >
-            <svg
-              width="28"
-              height="28"
-              viewBox="0 0 24 24"
-              fill={s <= rating ? 'currentColor' : 'none'}
-              stroke="currentColor"
-              strokeWidth="1.5"
-              className="text-primary transition-transform hover:scale-110"
-            >
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-            </svg>
+            <Star
+              size={28}
+              className={`text-primary transition-transform hover:scale-110 ${s <= rating ? 'fill-current' : ''}`}
+            />
           </button>
         ))}
       </div>

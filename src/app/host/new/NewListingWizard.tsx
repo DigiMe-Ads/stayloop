@@ -3,7 +3,9 @@
 import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { setOptions as setMapOptions, importLibrary } from '@googlemaps/js-api-loader'
+import { Check } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
+import { AMENITY_ICONS } from '@/lib/amenityIcons'
 import {
   createDraftListing,
   setListingLocation,
@@ -315,7 +317,7 @@ export default function NewListingWizard() {
                     : 'border border-border text-muted-foreground'
                 }`}
               >
-                {done ? '✓' : n}
+                {done ? <Check size={14} /> : n}
               </div>
               <span className={`hidden text-[12px] sm:inline ${active ? 'font-semibold text-foreground' : 'text-muted-foreground'}`}>
                 {label}
@@ -379,7 +381,7 @@ export default function NewListingWizard() {
                 />
               </div>
               <div>
-                <label className={labelCls}>Total beds</label>
+                <label className={labelCls}>Bathrooms</label>
                 <input
                   type="number"
                   min={1}
@@ -485,27 +487,31 @@ export default function NewListingWizard() {
             <div>
               <h3 className="mb-3 text-[15px] font-semibold text-foreground">Amenities</h3>
               <div className="grid grid-cols-2 gap-2">
-                {AMENITIES.map((a) => (
-                  <label
-                    key={a.value}
-                    className="flex cursor-pointer items-center gap-2 rounded-lg border border-border p-3 text-[14px] text-foreground transition hover:bg-muted"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={hostingOptions.amenities.includes(a.value)}
-                      onChange={(e) =>
-                        setHostingOptions({
-                          ...hostingOptions,
-                          amenities: e.target.checked
-                            ? [...hostingOptions.amenities, a.value]
-                            : hostingOptions.amenities.filter((v) => v !== a.value),
-                        })
-                      }
-                      className="h-4 w-4 flex-shrink-0"
-                    />
-                    {a.label}
-                  </label>
-                ))}
+                {AMENITIES.map((a) => {
+                  const Icon = AMENITY_ICONS[a.value]
+                  return (
+                    <label
+                      key={a.value}
+                      className="flex cursor-pointer items-center gap-2 rounded-lg border border-border p-3 text-[14px] text-foreground transition hover:bg-muted"
+                    >
+                      <input
+                        type="checkbox"
+                        checked={hostingOptions.amenities.includes(a.value)}
+                        onChange={(e) =>
+                          setHostingOptions({
+                            ...hostingOptions,
+                            amenities: e.target.checked
+                              ? [...hostingOptions.amenities, a.value]
+                              : hostingOptions.amenities.filter((v) => v !== a.value),
+                          })
+                        }
+                        className="h-4 w-4 flex-shrink-0"
+                      />
+                      {Icon && <Icon size={16} className="shrink-0 text-muted-foreground" />}
+                      {a.label}
+                    </label>
+                  )
+                })}
               </div>
             </div>
           </div>

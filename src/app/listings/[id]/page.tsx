@@ -1,9 +1,11 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Star, MapPin, ShieldCheck, ArrowLeftRight, Sparkles, Check } from 'lucide-react'
 import NavBar from '@/components/NavBar'
 import { createClient } from '@/lib/supabase/server'
 import { countryName } from '@/lib/countryNames'
+import { AMENITY_ICONS } from '@/lib/amenityIcons'
 import BookingSidebar from './BookingSidebar'
 import AvailabilityCalendar from './AvailabilityCalendar'
 import ReviewForm from './ReviewForm'
@@ -142,7 +144,7 @@ export default async function ListingPage({
         <div className="mt-2 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
           {listing.avg_rating != null && (
             <span className="flex items-center gap-1 font-semibold text-foreground">
-              <StarSvg />
+              <Star size={14} className="fill-current" />
               {listing.avg_rating.toFixed(1)}
               <span className="font-normal text-muted-foreground">
                 · {reviewList.length} review{reviewList.length !== 1 ? 's' : ''}
@@ -150,12 +152,12 @@ export default async function ListingPage({
             </span>
           )}
           <span className="flex items-center gap-1 text-muted-foreground">
-            <PinSvg />
+            <MapPin size={14} />
             {listing.region_name}, {countryName(listing.country_code)}
           </span>
           {owner?.is_verified && (
             <span className="flex items-center gap-1 font-medium text-primary">
-              <ShieldCheckSvg /> Verified host
+              <ShieldCheck size={14} /> Verified host
             </span>
           )}
         </div>
@@ -190,7 +192,7 @@ export default async function ListingPage({
                   {owner?.display_name ?? 'Host'}
                 </h2>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  {listing.max_guests} guests · {listing.bedrooms} bedrooms · {listing.beds} beds
+                  {listing.max_guests} guests · {listing.bedrooms} bedrooms · {listing.beds} bathrooms
                 </p>
                 {owner?.created_at && (
                   <p className="mt-0.5 text-sm text-muted-foreground">
@@ -217,21 +219,21 @@ export default async function ListingPage({
             <div className="space-y-5 border-b border-border py-6">
               {owner?.is_verified && (
                 <TrustRow
-                  icon={<ShieldCheckSvg size={22} />}
+                  icon={<ShieldCheck size={22} />}
                   title="ID verified host"
                   desc="Government ID and email confirmed by StayLoop."
                 />
               )}
               {listing.open_to_swap && (
                 <TrustRow
-                  icon={<SwapSvg size={22} />}
+                  icon={<ArrowLeftRight size={22} />}
                   title="Open to reciprocal swaps"
                   desc="Will travel to your home in return for hosting."
                 />
               )}
               {listing.open_to_loops && listing.loops_per_night && (
                 <TrustRow
-                  icon={<LoopsSvg size={22} />}
+                  icon={<Sparkles size={22} />}
                   title="Loops also accepted"
                   desc={`Stay without a return swap from ${listing.loops_per_night} Loops / night.`}
                 />
@@ -253,15 +255,18 @@ export default async function ListingPage({
               <div className="border-b border-border py-6">
                 <h3 className="mb-4 text-lg font-bold text-foreground">What this home offers</h3>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
-                  {amenities.map((a: string) => (
-                    <div
-                      key={a}
-                      className="flex items-center gap-2 rounded-xl bg-secondary px-3 py-2.5 text-sm font-medium text-accent"
-                    >
-                      <span className="h-2 w-2 shrink-0 rounded-full bg-primary" />
-                      {amenityLabel(a)}
-                    </div>
-                  ))}
+                  {amenities.map((a: string) => {
+                    const Icon = AMENITY_ICONS[a] ?? Check
+                    return (
+                      <div
+                        key={a}
+                        className="flex items-center gap-2 rounded-xl bg-secondary px-3 py-2.5 text-sm font-medium text-accent"
+                      >
+                        <Icon size={16} className="shrink-0 text-primary" />
+                        {amenityLabel(a)}
+                      </div>
+                    )
+                  })}
                 </div>
               </div>
             )}
@@ -274,8 +279,13 @@ export default async function ListingPage({
 
             {/* Reviews */}
             <div className="py-6">
-              <h3 className="mb-5 text-lg font-bold text-foreground">
-                {listing.avg_rating != null && `★ ${listing.avg_rating.toFixed(1)} · `}
+              <h3 className="mb-5 flex items-center gap-1 text-lg font-bold text-foreground">
+                {listing.avg_rating != null && (
+                  <>
+                    <Star size={16} className="fill-current text-foreground" />
+                    {listing.avg_rating.toFixed(1)} ·{' '}
+                  </>
+                )}
                 {reviewList.length} review{reviewList.length !== 1 ? 's' : ''}
               </h3>
 
@@ -411,47 +421,4 @@ function amenityLabel(key: string) {
     sea_view: 'Sea view', ocean_view: 'Ocean view',
   }
   return map[key] ?? key.split('_').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ')
-}
-
-function StarSvg() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-    </svg>
-  )
-}
-
-function PinSvg() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-      <circle cx="12" cy="10" r="3" />
-    </svg>
-  )
-}
-
-function ShieldCheckSvg({ size = 16, className = '' }: { size?: number; className?: string }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" className={className}>
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-      <path d="m9 12 2 2 4-4" />
-    </svg>
-  )
-}
-
-function SwapSvg({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <path d="M17 1l4 4-4 4" /><path d="M3 11V9a4 4 0 0 1 4-4h14" />
-      <path d="M7 23l-4-4 4-4" /><path d="M21 13v2a4 4 0 0 1-4 4H3" />
-    </svg>
-  )
-}
-
-function LoopsSvg({ size = 16 }: { size?: number }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-      <circle cx="8" cy="12" r="5" /><circle cx="16" cy="12" r="5" />
-    </svg>
-  )
 }
