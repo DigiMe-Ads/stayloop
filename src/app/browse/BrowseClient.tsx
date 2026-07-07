@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Star, SlidersHorizontal } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { countryName } from '@/lib/countryNames'
+import { parseWkbPoint } from '@/lib/geo'
 import BrowseMap, { type MapPin } from './BrowseMap'
 
 type Mode = 'all' | 'swap' | 'loops'
@@ -22,7 +23,7 @@ type ListingRow = {
   open_to_swap: boolean
   open_to_loops: boolean
   avg_rating: number | null
-  geo: { coordinates: [number, number] } | null // PostGIS geojson: [lng, lat]
+  geo: string | null // PostGIS geography(point) — returned by PostgREST as EWKB hex
   owner: { display_name: string } | null
   cover_photo: string | null
 }
@@ -105,13 +106,22 @@ export default function BrowseClient({
   }, [runSearch])
 
   const pins: MapPin[] = listings
-    .filter((l) => l.geo?.coordinates)
-    .map((l) => ({
-      id: l.id,
-      lat: l.geo!.coordinates[1],
-      lng: l.geo!.coordinates[0],
-      price: l.loops_per_night ?? 0,
-    }))
+    .map((l) => {
+      const coords = parseWkbPoint(l.geo)
+      if (!coords) return null
+      return {
+        id: l.id,
+        lat: coords.lat,
+        lng: coords.lng,
+        price: l.loops_per_night ?? 0,
+        title: l.title,
+        region: l.region_name,
+        country: countryName(l.country_code),
+        rating: l.avg_rating,
+        cover: l.cover_photo,
+      }
+    })
+    .filter((p): p is MapPin => p !== null)
 
   return (
     <main className="mx-auto max-w-7xl px-6 py-8">
