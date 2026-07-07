@@ -25,6 +25,32 @@ export async function createSwapRequest(input: {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) return { ok: false, error: 'Not authenticated.' }
 
+  if (kind === 'swap' && guestListingId) {
+    const { data: ownedListing } = await supabase
+      .from('listings')
+      .select('id')
+      .eq('id', guestListingId)
+      .eq('owner_id', user.id)
+      .maybeSingle()
+    if (!ownedListing) return { ok: false, error: 'You can only offer a home you own.' }
+  }
+
+  const { data: existing } = await supabase
+    .from('swaps')
+    .select('id, kind')
+    .eq('host_listing_id', hostListingId)
+    .eq('guest_id', user.id)
+    .in('status', ['requested', 'accepted', 'confirmed', 'active'])
+    .limit(1)
+    .maybeSingle()
+
+  if (existing) {
+    return {
+      ok: false,
+      error: 'You already have a pending or active request for this home — cancel or wait for a response before sending another.',
+    }
+  }
+
   const { error } = await supabase.rpc('request_swap', {
     p_host_listing: hostListingId,
     p_check_in: checkIn,
