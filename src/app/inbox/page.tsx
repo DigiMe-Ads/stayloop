@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import NavBar from '@/components/NavBar'
 import InboxClient, { type ConversationSummary } from './InboxClient'
 
 type Photo = { storage_path: string; sort_order: number }
@@ -71,7 +70,6 @@ export default async function InboxPage({
 
   return (
     <main>
-      <NavBar />
       <InboxClient
         conversations={conversations}
         initialConversationId={c ?? conversations[0]?.id ?? null}

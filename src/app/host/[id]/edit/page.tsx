@@ -1,6 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import NavBar from '@/components/NavBar'
 import EditListingForm from './EditListingForm'
 
 export default async function EditListingPage({
@@ -46,7 +45,6 @@ export default async function EditListingPage({
 
   return (
     <main>
-      <NavBar />
       <div className="mx-auto max-w-2xl px-6 py-10 pb-24">
         <h1 className="text-3xl font-extrabold tracking-tight text-foreground">Edit listing</h1>
         <p className="mt-2 text-[15px] text-muted-foreground">{listing.title}</p>

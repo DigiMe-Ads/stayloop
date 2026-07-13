@@ -1,11 +1,9 @@
-// src/app/page.tsx
-import NavBar from '@/components/NavBar'
+// src/app/how-it-works/page.tsx
 import LoopSystem from '@/components/howItWorks/LoopSystem'
 
 export default function Home() {
   return (
     <main>
-      <NavBar />
       <LoopSystem />
     </main>
   )

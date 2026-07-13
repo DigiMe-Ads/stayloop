@@ -1,7 +1,6 @@
 import { notFound, redirect } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import NavBar from '@/components/NavBar'
 import { createClient } from '@/lib/supabase/server'
 import { countryName } from '@/lib/countryNames'
 import BookForm from './BookForm'
@@ -67,9 +66,7 @@ export default async function BookPage({
   }
 
   return (
-    <>
-      <NavBar />
-      <main className="mx-auto max-w-2xl px-6 py-10 pb-24">
+    <main className="mx-auto max-w-2xl px-6 py-10 pb-24">
         <Link
           href={`/listings/${id}`}
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
@@ -105,7 +102,6 @@ export default async function BookPage({
           myListings={myListings}
           balance={balance}
         />
-      </main>
-    </>
+    </main>
   )
 }

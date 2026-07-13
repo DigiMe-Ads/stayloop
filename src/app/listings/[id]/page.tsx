@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Star, MapPin, ShieldCheck, ArrowLeftRight, Sparkles, Check } from 'lucide-react'
-import NavBar from '@/components/NavBar'
 import { createClient } from '@/lib/supabase/server'
 import { countryName } from '@/lib/countryNames'
 import { AMENITY_ICONS } from '@/lib/amenityIcons'
@@ -127,9 +126,7 @@ export default async function ListingPage({
   const blockedDates = (availability ?? []).map((d: { date: string }) => d.date)
 
   return (
-    <>
-      <NavBar />
-      <main className="mx-auto max-w-7xl px-6 py-8 pb-20">
+    <main className="mx-auto max-w-7xl px-6 py-8 pb-20">
         <Link
           href="/browse"
           className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
@@ -163,13 +160,13 @@ export default async function ListingPage({
         </div>
 
         {/* Photo grid */}
-        <div className="mt-6 grid h-[400px] grid-cols-[2fr_1fr] gap-2 overflow-hidden rounded-3xl">
+        <div className="mt-6 grid h-[260px] grid-cols-1 gap-2 overflow-hidden rounded-3xl sm:h-[400px] sm:grid-cols-[2fr_1fr]">
           <div className="relative bg-muted">
             {photoUrls[0] && (
               <Image src={photoUrls[0]} alt={listing.title} fill className="object-cover" />
             )}
           </div>
-          <div className="grid grid-cols-2 grid-rows-2 gap-2">
+          <div className="hidden grid-cols-2 grid-rows-2 gap-2 sm:grid">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="relative bg-muted">
                 {photoUrls[i] && (
@@ -392,8 +389,7 @@ export default async function ListingPage({
             </div>
           </section>
         )}
-      </main>
-    </>
+    </main>
   )
 }
 

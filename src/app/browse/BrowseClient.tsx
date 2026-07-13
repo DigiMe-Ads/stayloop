@@ -136,20 +136,20 @@ export default function BrowseClient({
           </p>
         </div>
 
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
           <div className="flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="text-muted-foreground">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" className="shrink-0 text-muted-foreground">
               <circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" />
             </svg>
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search city or country"
-              className="w-44 border-none bg-transparent p-0 text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0"
+              className="w-full border-none bg-transparent p-0 text-[14px] text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0 sm:w-44"
             />
           </div>
 
-          <div className="flex items-center gap-1 rounded-full border border-border p-1">
+          <div className="flex items-center gap-1 self-start rounded-full border border-border p-1">
             {(['all', 'swap', 'loops'] as Mode[]).map((m) => (
               <button
                 key={m}

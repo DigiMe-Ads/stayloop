@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import NavBarUserMenu from './NavBarUserMenu'
+import MobileNavMenu from './MobileNavMenu'
 
 type SessionProfile = { display_name: string | null; avatar_url: string | null; is_admin: boolean | null } | null
 
@@ -42,8 +43,8 @@ function NavContent({ profile }: { profile: SessionProfile }) {
         <Link href="/inbox" className="hover:text-black">Inbox</Link>
       </div>
 
-      {/* Right actions */}
-      <div className="flex items-center gap-3">
+      {/* Right actions — full row on desktop, hamburger on mobile */}
+      <div className="hidden items-center gap-3 md:flex">
         {profile ? (
           <NavBarUserMenu
             displayName={profile.display_name}
@@ -60,7 +61,7 @@ function NavContent({ profile }: { profile: SessionProfile }) {
             </Link>
             <Link
               href="/signup"
-              className="hidden rounded-full bg-black px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-gray-800 sm:inline-block"
+              className="rounded-full bg-black px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-gray-800"
             >
               Sign up
             </Link>
@@ -68,11 +69,13 @@ function NavContent({ profile }: { profile: SessionProfile }) {
         )}
         <Link
           href="/host/new"
-          className="hidden rounded-full bg-black px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-gray-800 md:inline-block"
+          className="rounded-full bg-black px-5 py-2.5 text-[15px] font-semibold text-white hover:bg-gray-800"
         >
           List your home
         </Link>
       </div>
+
+      <MobileNavMenu profile={profile} />
     </nav>
   )
 }

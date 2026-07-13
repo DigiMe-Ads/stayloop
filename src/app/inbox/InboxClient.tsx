@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export type ConversationSummary = {
@@ -106,6 +107,11 @@ export default function InboxClient({
     router.replace(`/inbox?c=${id}`, { scroll: false })
   }
 
+  function backToList() {
+    setSelectedId(null)
+    router.replace('/inbox', { scroll: false })
+  }
+
   const selectedConversation = conversations.find((c) => c.id === selectedId) ?? null
 
   return (
@@ -114,7 +120,11 @@ export default function InboxClient({
 
       <div className="mt-6 grid grid-cols-1 overflow-hidden rounded-2xl border border-border lg:grid-cols-[340px_1fr]">
         {/* Conversation list */}
-        <div className="divide-y divide-border border-b border-border lg:max-h-[600px] lg:overflow-y-auto lg:border-b-0 lg:border-r">
+        <div
+          className={`divide-y divide-border border-b border-border lg:block lg:max-h-[600px] lg:overflow-y-auto lg:border-b-0 lg:border-r ${
+            selectedConversation ? 'hidden' : ''
+          }`}
+        >
           {conversations.length === 0 ? (
             <p className="p-6 text-[14px] text-muted-foreground">No conversations yet.</p>
           ) : (
@@ -144,7 +154,7 @@ export default function InboxClient({
         </div>
 
         {/* Thread */}
-        <div className="flex h-[600px] flex-col">
+        <div className={`h-[600px] flex-col lg:flex ${selectedConversation ? 'flex' : 'hidden'}`}>
           {!selectedConversation ? (
             <div className="flex flex-1 items-center justify-center text-[14px] text-muted-foreground">
               Select a conversation
@@ -152,6 +162,14 @@ export default function InboxClient({
           ) : (
             <>
               <div className="flex items-center gap-3 border-b border-border p-4">
+                <button
+                  type="button"
+                  onClick={backToList}
+                  aria-label="Back to conversations"
+                  className="-ml-1 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full text-muted-foreground hover:bg-muted lg:hidden"
+                >
+                  <ArrowLeft size={18} />
+                </button>
                 <div className="relative h-9 w-9 overflow-hidden rounded-full bg-muted">
                   {selectedConversation.cover && (
                     <Image src={selectedConversation.cover} alt="" fill className="object-cover" />

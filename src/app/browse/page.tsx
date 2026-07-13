@@ -1,5 +1,4 @@
 import BrowseClient from './BrowseClient'
-import NavBar from '@/components/NavBar'
 
 export default async function BrowsePage({
   searchParams,
@@ -8,12 +7,9 @@ export default async function BrowsePage({
 }) {
   const params = await searchParams
   return (
-    <>
-      <NavBar/>
-      <BrowseClient
-        initialRegion={params.region ?? ''}
-        initialMode={(params.mode as 'all' | 'swap' | 'loops') ?? 'all'}
-      />
-    </>
+    <BrowseClient
+      initialRegion={params.region ?? ''}
+      initialMode={(params.mode as 'all' | 'swap' | 'loops') ?? 'all'}
+    />
   )
 }

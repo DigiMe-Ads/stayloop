@@ -4,7 +4,6 @@ import { redirect } from 'next/navigation'
 import { Check, Sparkles, ArrowLeftRight, TrendingUp } from 'lucide-react'
 import { createClient } from '@/lib/supabase/server'
 import { countryName } from '@/lib/countryNames'
-import NavBar from '@/components/NavBar'
 import PendingRequestActions from './PendingRequestActions'
 import MessageButton from './MessageButton'
 
@@ -123,7 +122,6 @@ export default async function DashboardPage({
 
   return (
     <main>
-      <NavBar />
       <div className="mx-auto max-w-7xl px-6 py-10">
         {sp.swap === 'requested' && (
           <div className="mb-6 flex items-center gap-2 rounded-2xl bg-secondary px-5 py-4 text-sm font-medium text-accent">
